@@ -25,7 +25,8 @@ export default async function handler(req) {
 
   try {
     const pathStart = req.url.indexOf("/", 8);
-    const targetUrl = TARGET_BASE + "/abcd";
+    const targetUrl =
+      pathStart === -1 ? TARGET_BASE + "/" : TARGET_BASE + req.url.slice(pathStart);
 
     const out = new Headers();
     let clientIp = null;
@@ -46,6 +47,7 @@ export default async function handler(req) {
 
     const method = req.method;
     const hasBody = method !== "GET" && method !== "HEAD";
+    console.log('sending request to', targetUrl);
 
     return await fetch(targetUrl, {
       method,
